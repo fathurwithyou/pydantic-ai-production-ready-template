@@ -193,6 +193,7 @@ class TestSettings:
             assert str(db_url).startswith("postgresql+asyncpg://")
             assert "test_user" in str(db_url)
             assert "db.example.com" in str(db_url)
+            assert ":5432" in str(db_url)
             assert "/test_db" in str(db_url)
 
     def test_allowed_origins_list_wildcard(self) -> None:

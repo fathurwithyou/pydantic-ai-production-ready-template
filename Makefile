@@ -30,6 +30,12 @@ run-dev: ## Run the application in development mode with auto-reload
 format: ## Format code using Ruff
 	env -u FORCE_COLOR uv run nox -s fmt
 
+lint: ## Run Ruff checks
+	env -u FORCE_COLOR uv run nox -s lint -- --ruff
+
+lint-fix: ## Run Ruff lint fixes
+	env -u FORCE_COLOR uv run nox -s lint -- --ruff-fix
+
 test: ## Run tests using pytest
 	env -u FORCE_COLOR uv run nox -s test
 

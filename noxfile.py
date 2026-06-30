@@ -1,3 +1,5 @@
+"""Nox sessions for formatting, linting, and testing."""
+
 from typing import Any
 
 import nox
@@ -14,6 +16,7 @@ class CLIArgs(
     junitxml: str = ""
     pyright: bool = False
     ruff: bool = False
+    ruff_fix: bool = False
 
     @classmethod
     def parse(cls, posargs: list[str]) -> "CLIArgs":
@@ -31,7 +34,7 @@ class CLIArgs(
 
         for arg in posargs:
             if arg.startswith("--"):
-                arg_name = arg[2:]
+                arg_name = arg[2:].replace("-", "_")
                 kwargs[arg_name] = True
             elif arg_name is not None:
                 kwargs[arg_name] = arg
@@ -73,8 +76,11 @@ def lint(session: nox.Session) -> None:
         session.run("uv", "run", "pyright")
         session.log("✅ Pyright linting completed successfully.")
     if args.ruff:
-        session.run("uv", "run", "ruff", "check", ".", "--fix")
+        session.run("uv", "run", "ruff", "check", ".")
         session.log("✅ Ruff linting completed successfully.")
+    if args.ruff_fix:
+        session.run("uv", "run", "ruff", "check", ".", "--fix")
+        session.log("✅ Ruff lint fixes completed successfully.")
 
 
 @nox.session(python=False)
